@@ -13,13 +13,20 @@ def main():
     
     # Preprocess the data
     processed_data, aggregated_data = preprocessor.preprocess()
-
     print(processed_data.head())
 
+    # print the typeof custimer_id
+    print(processed_data['customer_id'].dtype)
+
+    # print customer 16563 from the processed data
+    print(processed_data[processed_data['customer_id'] == 16563])
+
+   
+
     # Assume dataset is your DataFrame containing customer data
-    customer = Customer(customer_id=16563, dataset=processed_data)
-    print(customer.data.head())
-    sales_forecast = customer.forecast_timeseries_customer()
+    #customer = Customer(customer_id=16563, dataset=processed_data)
+    #print(customer.data.head())
+    #sales_forecast = customer.forecast_timeseries_customer()
 
 
     

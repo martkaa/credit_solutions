@@ -21,6 +21,7 @@ class DataPreprocessor:
         self.df.columns = self.df.columns.str.replace('-', '_')
         for col in ['calculated_credit_limit']:
             self.df.loc[:, col] = self.df[col].str.replace(',', '.').astype(float)
+            self.df.loc[:, col].fillna(100000, inplace=True)
         
         return self.df
     
@@ -34,14 +35,20 @@ class DataPreprocessor:
     
 
     def _process_numeric_cols(self):
+        # remove all rows where cutsomer id is not a number and convert to int
+        print(self.df.head())
+        self.df = pd.to_numeric(self.df['customer_id'], errors='coerce')
+        self.df = self.df.dropna()
+        
+        self.df['customer_id'] = self.df['customer_id'].astype(int)
+
+
         for col in ['invoiced_amount', 'cost', 'other_costs']:
             self.df.loc[:, col] = self.df[col].str.replace(',', '.').astype(float)
             self.df.loc[:, col] = self.df[col].abs()
             self.df.loc[:, col].fillna(0, inplace=True)
         
-
-        for col in ['calculated_credit_limit']:
-            self.df.loc[:, col].fillna(100000, inplace=True)
+        #self.df['customer_id'] = self.df['customer_id'].astype(int)
         return self.df
 
     def _process_categorical_cols(self):

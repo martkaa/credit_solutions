@@ -9,10 +9,13 @@ class Customer:
 
     def fetch_data(self, dataset):
         # Fetch data specific to the customer from the dataset
-        dataset[dataset['customer_id'] == self.customer_id]
+        # find all rows with the customer_id, print error if there are none
+        dataset = dataset[dataset['customer_id'] == self.customer_id]
+        if len(dataset) == 0:
+            print(f'No data found for customer {self.customer_id}')
+        
         # set the index to the period
         dataset.set_index('period', inplace=True)
-        print(dataset.head())
         return dataset
     
     def forecast_timeseries_customer(self, column_to_forecast='invoiced_amount'):
@@ -23,6 +26,8 @@ class Customer:
         )
         # Here forecast will contain the sales forecast
         return forecast
+    
+    
 
     def run_all(self):
         # For example, to forecast sales, you can call:
